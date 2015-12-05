@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+
+  <% include ../partials/header.ejs %>
+    
+    <title>URL Shortener</title>
+	
+	<script type="text/javascript">
+	 var final;
+	 var sendURL;
+	 var shortURL = function postURL(callback){
+	    
+	     var url = document.getElementById('url').value;
+		 console.log("URL is", url);
+		 var ur2 = "http://Team7CP-1756060665.us-east-1.elb.amazonaws.com:80/shortenURL/";
+		 var final =ur2.concat(url);
+		 console.log("Final url is", final);
+		
+		  var xmlHttp = new XMLHttpRequest();
+		  xmlHttp.open( "GET", final, false ); // false for synchronous request
+		  xmlHttp.send();
+		  var response = xmlHttp.responseText;
+		  var noQuotes = response.split('"').join('');
+		  var lburl = "http://Team7LR-1363407384.us-east-1.elb.amazonaws.com/";
+		  final = lburl.concat(noQuotes);
+		  document.getElementById('shorturl').value= final;
+		  return final;
+	  }
+	   function sendURL() {
+		return shortURL();
+	  }
+	  
+	  	 var trends = function getTrends(callback){
+	    
+		 var url = "http://Team7CP-1756060665.us-east-1.elb.amazonaws.com:80/getTrends/";
+		 
+		
+		  var xmlHttp = new XMLHttpRequest();
+		  xmlHttp.open( "GET", url, false ); // false for synchronous request
+		  xmlHttp.send();
+		  var response = xmlHttp.responseText;
+		
+	  }
+	  
+	</script>
+	
+
+</head>
+
+<body>
+
+
+<div class="jumbotron text-center">
+  <div class="container">
+
+    <h1>URL Shortener</h1>
+    <p>This is a sample Node application deployed to Heroku which will shorten the URL you enter </p>
+   
+    <div class="container">
+	  <form onsubmit="return false;">
+		  <input style="font-size:12pt;height:40px;color:black;width:400px;text-align:center" name= "url" id= "url" type="text">
+		  <br></br>
+		  <button type="button" class="btn btn-lg btn-primary" onclick='sendURL();'>Submit</button>
+	  </form>
+	  
+	</div>
+	
+	<br />
+	<p>Shortened URL:
+	<br />
+		
+		<input type="url"  style="font-size:12pt;color:black;height:40px;width:800px;text-align:center" type="text" name="blah" id="shorturl"/>
+	
+	<br/>
+	</p>
+	
+	
+	
+	
+	
+   
+	<script type="text/javascript">
+	  <% if (locals.error) { %>
+	  $('#error').show(0.5);
+      <% } %>
+	</script>
+	<div>
+  </div>
+</div>
+
+
+
+</body>
+</html>
